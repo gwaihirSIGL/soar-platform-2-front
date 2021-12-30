@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { IconButton, TableBody, TableRow, TableCell } from '@mui/material';
 import { DeleteIcon, EditIcon } from '@mui/icons-material';
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [userList, setUserList] = useState([]);
@@ -20,7 +22,7 @@ function App() {
     };
 
     useEffect(() => {
-      fetch("http://localhost:8401/property", requestOptions)
+      fetch(`${BASE_URL}/property`, requestOptions)
         .then(res => res.json())
         .then(
           (result) => {
@@ -31,7 +33,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:8401/property")
+    fetch(`${BASE_URL}/property`)
       .then(res => res.json())
       .then(
         (result) => {
