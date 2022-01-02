@@ -29,7 +29,7 @@ function App() {
   let userListPrint = [];
 
   useEffect(() => {
-    fetch(`${BASE_URL}/user`)
+    fetch(`http://${BASE_URL}/user`)
       .then(res => res.json())
       .then(
         (result) => {
