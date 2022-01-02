@@ -50,7 +50,7 @@ function App() {
               {userList[i].id}
             </td>
             <td>
-              {userList[i].code_postal}
+              {userList[i].name}
             </td>
           </tr>
       )
@@ -62,7 +62,7 @@ function App() {
            <thead>
              <tr>
                <th>Id</th>
-               <th>Code Postal</th>
+               <th>Name</th>
              </tr>
            </thead>
            <tbody>
