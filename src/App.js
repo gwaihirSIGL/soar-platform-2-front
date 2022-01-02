@@ -19,7 +19,7 @@ function patch() {
     )
   };
   
-  fetch(`${BASE_URL}/property`, requestOptions);
+  fetch(`${BASE_URL}/user`, requestOptions);
 }
 
 
@@ -29,7 +29,7 @@ function App() {
   let userListPrint = [];
 
   useEffect(() => {
-    fetch(`${BASE_URL}/property`)
+    fetch(`${BASE_URL}/user`)
       .then(res => res.json())
       .then(
         (result) => {
