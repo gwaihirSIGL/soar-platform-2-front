@@ -19,7 +19,7 @@ function patch() {
     )
   };
   
-  fetch(`${BASE_URL}/user`, requestOptions);
+  fetch(`http://${BASE_URL}/user`, requestOptions);
 }
 
 
