@@ -1,36 +1,32 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
-import { IconButton, TableBody, TableRow, TableCell } from '@mui/material';
-import { DeleteIcon, EditIcon } from '@mui/icons-material';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+
+function patch() {
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(
+      {
+        name: "Test POST"
+        // code_postal: "91600",
+        // valeur_fonciere: 1,
+        // type_local: "Maison",
+        // nb_pieces_principales: 2,
+      }
+    )
+  };
+  
+  fetch(`${BASE_URL}/property`, requestOptions);
+}
+
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [userList, setUserList] = useState([]);
-  const userListPrint = [];
-
-  function Patch() {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(
-        {
-          code_postal: "91600"
-        }
-      )
-    };
-
-    useEffect(() => {
-      fetch(`${BASE_URL}/property`, requestOptions)
-        .then(res => res.json())
-        .then(
-          (result) => {
-            setUserList(result);
-          }
-        )
-    })
-  }
+  let userListPrint = [];
 
   useEffect(() => {
     fetch(`${BASE_URL}/property`)
@@ -46,7 +42,7 @@ function App() {
   if (!isLoaded)
     return <div>Chargement...</div>;
   else
-    console.table(userList);
+    userListPrint = [];
     for (var i = 0; i < userList.length; i++) {
       userListPrint.push(
           <tr>
@@ -55,9 +51,6 @@ function App() {
             </td>
             <td>
               {userList[i].code_postal}
-            </td>
-            <td>
-              {/* <button onClick={Patch()}>oui</button> */}
             </td>
           </tr>
       )
@@ -76,9 +69,9 @@ function App() {
              {userListPrint}
            </tbody>
          </table>
-         <div>
-          
-         </div>
+        <div>
+          <button onClick={patch}>POST</button>
+        </div>
        </div>
     )
 
