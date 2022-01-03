@@ -140,12 +140,12 @@ export function Tableau() {
       name: "Walid est magique",
     },
   ]);
-  let userListPrint = [];
 
   const loadGet = () => {
     fetch(`http://${BASE_URL}/user`)
       .then((res) => res.json())
       .then((result) => {
+        console.log("Tableau -- Res ", result)
         setUserList(result);
       });
   };
@@ -178,15 +178,17 @@ export function Tableau() {
           <tr>
             <th>Id</th>
             <th>Name</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {userList.map((elem) => {
+            return (
             <tr>
               <td>{elem.id}</td>
               <td>{elem.name}</td>
               <td>Supprimer</td>
-            </tr>;
+            </tr>);
           })}
         </tbody>
       </table>

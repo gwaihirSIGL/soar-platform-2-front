@@ -8,3 +8,10 @@ tfoot {
     background-color: #333;
     color: #fff;
 }
+
+.Tableau {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+}
