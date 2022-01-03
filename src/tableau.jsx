@@ -1,6 +1,10 @@
 import { createUseStyles } from "react-jss";
 import React, { useEffect, useState } from "react";
 
+import deleteICON from "./delete.png";
+import editICON from "./edit.png";
+import { autocompleteClasses } from "@mui/material";
+
 const useStyles = createUseStyles(() => ({
   mainContainer: {
     display: "block",
@@ -23,21 +27,6 @@ const useStyles = createUseStyles(() => ({
     display: "flex",
     flexBasis: "100%",
     flexDirection: "column",
-  },
-  itemContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderRadius: 5,
-    padding: [10, 20],
-    border: `1px solid`,
-    "&:hover": {
-      backgroundColor: "#e7e7e7",
-    },
-    "&:nthChild(odd)": {
-      backgroundColor: "#d9d9d9",
-    },
-    // td:nthChild(odd)
   },
   itemContainerTitle: {
     display: "flex",
@@ -62,7 +51,7 @@ const useStyles = createUseStyles(() => ({
     minWidth: "0",
     width: "40%",
     textAlign: "center",
-    marginLeft: "66px",
+    margin: "auto",
   },
   entryContainerTitle: {
     display: "flex",
@@ -99,15 +88,17 @@ const useStyles = createUseStyles(() => ({
     cursor: "default",
     backgroundColor: "buttonface",
     boxSizing: "border-box",
-    margin: "0em",
+    margin: "auto",
     font: "400 11px system-ui",
     padding: "1px 7px 2px",
     borderWidth: "1px",
     borderStyle: "solid",
     borderColor: "rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186)",
     borderImage: "initial",
+    margin: "auto",
   },
   buttonMod: {
+    margin: "auto",
     "&:hover": {
       color: "#358df1",
       boxShadow: "0px 0px 6px 0px #358df1",
@@ -117,6 +108,8 @@ const useStyles = createUseStyles(() => ({
     },
   },
   buttonCancel: {
+    margin: "auto",
+
     "&:hover": {
       color: "red",
       boxShadow: "0px 0px 6px 0px red",
@@ -124,6 +117,36 @@ const useStyles = createUseStyles(() => ({
     "&:focus": {
       boxShadow: "inset 0 0 0 2em var(--hover)",
     },
+  },
+  editimg: {
+    width: "3%",
+    borderRadius: "50%",
+    "&:hover": {
+      color: "red",
+      boxShadow: "0px 0px 6px 0px red",
+    },
+  },
+  deleteimg: {
+    width: "3%",
+    borderRadius: "50%",
+
+    "&:hover": {
+      color: "red",
+      boxShadow: "0px 0px 6px 0px red",
+    },
+  },
+
+  imgcontainer: {
+    minHeight: "37px",
+    minWidth: "200",
+  },
+  itemContainer: {
+    minHeight: "37px",
+    minWidth: "200px",
+    maxWidth: "205px",
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
   },
 }));
 
@@ -136,7 +159,7 @@ export function Tableau() {
       name: "Dodo est nul",
     },
     {
-      id: 1,
+      id: 2,
       name: "Walid est magique",
     },
   ]);
@@ -145,7 +168,7 @@ export function Tableau() {
     fetch(`http://${BASE_URL}/user`)
       .then((res) => res.json())
       .then((result) => {
-        console.log("Tableau -- Res ", result)
+        console.log("Tableau -- Res ", result);
         setUserList(result);
       });
   };
@@ -170,7 +193,35 @@ export function Tableau() {
     loadGet();
   }, []);
 
+  const [inEditMode, setInEditMode] = useState({
+    status: false,
+    rowKey: null,
+  });
+  const [unitValue, setUnitValue] = useState("");
 
+  const onEdit = ({ id, currentUnit }) => {
+    setInEditMode({
+      status: true,
+      rowKey: id,
+    });
+    setUnitValue(currentUnit);
+  };
+
+  const onSave = ({ id, newUnitVALUE }) => {
+    // POST HERTE
+  };
+
+  const onCancel = () => {
+    // reset the inEditMode state value
+    setInEditMode({
+      status: false,
+      rowKey: null,
+    });
+    // reset the unit  state value
+    setUnitValue("");
+  };
+
+  const styles = useStyles();
   return (
     <div>
       <table>
@@ -184,11 +235,64 @@ export function Tableau() {
         <tbody>
           {userList.map((elem) => {
             return (
-            <tr>
-              <td>{elem.id}</td>
-              <td>{elem.name}</td>
-              <td>Supprimer</td>
-            </tr>);
+              <tr>
+                <td>{elem.id}</td>
+                <td>
+                  <div className={styles.itemContainer}>
+                    {inEditMode.status && inEditMode.rowKey === elem.id ? (
+                      <input
+                        value={unitValue}
+                        className={styles.inputContainer}
+                        onChange={(event) => setUnitValue(event.target.value)}
+                      />
+                    ) : (
+                      elem.name
+                    )}
+                  </div>
+                </td>
+                <td>
+                  {inEditMode.status && inEditMode.rowKey === elem.id ? (
+                    <div className={styles.imgcontainer}>
+                      <button
+                        className={`${styles.button} ${styles.buttonMod}`}
+                        onClick={() =>
+                          onSave({ id: elem.id, newUnitVALUE: unitValue })
+                        }
+                      >
+                        Save
+                      </button>
+
+                      <button
+                        className={`${styles.button} ${styles.buttonCancel}`}
+                        style={{ marginLeft: 8 }}
+                        onClick={() => onCancel()}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <div className={styles.imgcontainer}>
+                      <img
+                        src={editICON}
+                        className={styles.editimg}
+                        alt="Edit"
+                        onClick={() =>
+                          onEdit({ id: elem.id, currentUnit: elem.id })
+                        }
+                      />
+                      <img
+                        src={deleteICON}
+                        className={styles.deleteimg}
+                        alt="Delete"
+                        onClick={() =>
+                          onEdit({ id: elem.id, currentUnit: elem.id })
+                        }
+                      />
+                    </div>
+                  )}
+                </td>
+              </tr>
+            );
           })}
         </tbody>
       </table>
@@ -197,40 +301,4 @@ export function Tableau() {
       </div>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <table>
-  //       <thead>
-  //         <tr>
-  //           <th>Id</th>
-  //           <th>Code Postal</th>
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         {userListPrint}
-  //       </tbody>
-  //     </table>
-  //     <div>
-
-  //     </div>
-  //   </div>
-  // );
-
-  // return(
-  //   <TableBody>
-  //   {this.state.serviceData.map(n => {
-  //     return (
-  //       <TableRow key={n.id}>
-  //         <TableCell component="th" scope="row">
-  //           {deleteIcon}
-  //           {editIcon}
-  //         </TableCell>
-  //         <TableCell>{n.domain}</TableCell>
-  //         <TableCell>{n.service_name}</TableCell>
-  //       </TableRow>
-  //     )
-  //   })}
-  //   </TableBody>
-  // )
 }
