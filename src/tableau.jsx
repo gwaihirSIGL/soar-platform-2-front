@@ -211,6 +211,10 @@ export function Tableau() {
     // POST HERTE
   };
 
+  const onDelete = ({ id, newUnitVALUE }) => {
+    // POST HERTE
+  };
+
   const onCancel = () => {
     // reset the inEditMode state value
     setInEditMode({
@@ -285,7 +289,7 @@ export function Tableau() {
                         className={styles.deleteimg}
                         alt="Delete"
                         onClick={() =>
-                          onEdit({ id: elem.id, currentUnit: elem.id })
+                          onDelete({ id: elem.id, currentUnit: elem.id })
                         }
                       />
                     </div>
